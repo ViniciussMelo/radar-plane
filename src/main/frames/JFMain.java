@@ -108,7 +108,8 @@ public class JFMain extends javax.swing.JFrame {
 		btnAdd.setText("Add");
 		btnAdd.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnAdicionarActionPerformed(evt);
+				AdicionaAvio();
+				btnAdd.setEnabled(false);
 			}
 		});
 
@@ -441,5 +442,13 @@ public class JFMain extends javax.swing.JFrame {
         sep14.setVisible(true);
         pnlRadar.add(sep14);
 	}
+	
+	
+	private void AdicionaAvio() {
+		JFAdiconaAviao adicionaAvi = new JFAdiconaAviao();
+		adicionaAvi.setVisible(true);
+	}
+	
+	
 }
 
