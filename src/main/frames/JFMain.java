@@ -1,8 +1,11 @@
 package main.frames;
 
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -97,7 +100,6 @@ public class JFMain extends JFrame {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				setEnableBtnAdd(false);
 				AdicionaAviao();
-				
 			}
 		});
 
@@ -349,7 +351,7 @@ public class JFMain extends JFrame {
 		URL url = getClass().getResource("../images/airport.png");        
         JLabel label = new JLabel(new ImageIcon(url));
         label.setBounds(201 - (30/2), 200 - (30/2), 30, 30);
-        pnlRadar.add(label);
+       // pnlRadar.add(label);
         
         // Horizontal lines
         JSeparator sep1 = new JSeparator();
@@ -441,16 +443,41 @@ public class JFMain extends JFrame {
 		btnAdd.setEnabled(enable);
 	}
 	
-	public void addGrade(Aviao a) {
+	public void addGrade(Aviao aviao) {
+		aviao.setCodigo(defaultTableModel.getRowCount() + 1);
 		defaultTableModel.addRow(new Object[]{
-				a.getCodigo(),
-				a.getPontoX(),
-				a.getPontoY(),
-				a.getRaio(),
-				a.getAngulo(),
-				a.getVelocidade(),
-				a.getDirecao(),
-		});
+												aviao.getCodigo(),
+												aviao.getPontoX(),
+												aviao.getPontoY(),
+												aviao.getRaio(),
+												aviao.getAngulo(),
+												aviao.getVelocidade(),
+												aviao.getDirecao(),
+											  });
+		addImagePanel(aviao);
+	}
+	
+	public void addImagePanel(Aviao aviao) {
+		try {
+			URL url = getClass().getResource("../images/plane.png");
+			
+			BufferedImage img = ImageIO.read(url);
+			
+			int x = (int) (200 + aviao.getPontoX() - (30/2));
+	        int y = (int) (200 - aviao.getPontoY()- (30/2));
+	        
+			JLabel label = new JLabel(new ImageIcon(img));
+			
+			label.setBounds(x, y, 30, 30);
+			
+			pnlRadar.add(label);
+			pnlRadar.revalidate();
+			pnlRadar.repaint();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
 	}
 	
 	

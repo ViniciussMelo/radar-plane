@@ -283,9 +283,9 @@ public class JFAdiconaAviao extends JDialog {
 	
 	private void salvar(JFMain p) {
 		try {
-			Random aleatorio = new Random();
 			Aviao aviao = new Aviao();	
-			aviao.setCodigo(aleatorio.nextInt(100000));
+			/*Random aleatorio = new Random();
+			aviao.setCodigo(aleatorio.nextInt(100000));*/
 			aviao.setVelocidade(Double.parseDouble(edtVelocidade.getText()));
 			aviao.setDirecao(Double.parseDouble(edtDirecao.getText()));
 			
