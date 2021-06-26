@@ -2,41 +2,56 @@ package main.frames;
 
 import java.net.URL;
 
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
+import main.model.Aviao;
 
 @SuppressWarnings("serial")
-public class JFMain extends javax.swing.JFrame {
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel3;
+public class JFMain extends JFrame {
+	private JLabel jLabel1;
+	private JLabel jLabel2;
+	private JLabel jLabel3;
 	
-	private javax.swing.JButton btnAdd;
-	private javax.swing.JButton btnScale;
-	private javax.swing.JButton btnRemove;
-	private javax.swing.JButton btnRotate;
-	private javax.swing.JButton btnTranslate;
-	private javax.swing.JButton btnDistPlanes;
-	private javax.swing.JButton btnDistAirport;
-	private javax.swing.JButton btnCollisionCourse;	
+	private JButton btnAdd;
+	private JButton btnScale;
+	private JButton btnRemove;
+	private JButton btnRotate;
+	private JButton btnTranslate;
+	private JButton btnDistPlanes;
+	private JButton btnDistAirport;
+	private JButton btnCollisionCourse;	
 	
-	private javax.swing.JScrollPane jScrollPane1;
+	private JScrollPane jScrollPane1;
 	
-	private javax.swing.JSeparator jSeparator1;
+	private JSeparator jSeparator1;
 	
-	private javax.swing.JLabel lblReport;
-	private javax.swing.JLabel lblPlaneTable;
+	private JLabel lblReport;
+	private JLabel lblPlaneTable;
 	
-	private javax.swing.JPanel pnlLayout;
-	private javax.swing.JPanel pnlRadar;
+	private JPanel pnlLayout;
+	private JPanel pnlRadar;
 	
-	private javax.swing.JScrollPane scpPlane;
+	private JScrollPane scpPlane;
 	
-	private javax.swing.JTable tblPlane;
+	private JTable tblPlane;
 	
-	private javax.swing.JTextArea txtReport;
+	private DefaultTableModel defaultTableModel;
+	
+	private JTextArea txtReport;
 
 	public JFMain() {
 		initComponents();
@@ -49,71 +64,44 @@ public class JFMain extends javax.swing.JFrame {
 		final java.awt.Color colorSecondButton = new java.awt.Color(153, 230, 255);
 		final java.awt.Color colorTables = new java.awt.Color(105,105,105);
 		
-		jLabel1 = new javax.swing.JLabel();
-		jLabel2 = new javax.swing.JLabel();
-		jLabel3 = new javax.swing.JLabel();
+		jLabel1 = new JLabel();
+		jLabel2 = new JLabel();
+		jLabel3 = new JLabel();
 
 		jLabel1.setText("Radar");
 		jLabel2.setText("Transformation Functions");
 		jLabel3.setText("Tracking Functions");
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Plane radar");
 		
-		pnlLayout = new javax.swing.JPanel();
+		pnlLayout = new JPanel();
 		pnlLayout.setPreferredSize(new java.awt.Dimension(900, 600));
 		
-		tblPlane = new javax.swing.JTable();
-		tblPlane.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] { { null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null } },
-				new String[] { "ID", "X", "Y", "R", "A", "V", "D" }) {
-			@SuppressWarnings("rawtypes")
-			Class[] types = new Class[] { java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class,
-					java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class };
-			boolean[] canEdit = new boolean[] { false, false, false, false, false, false, false };
-
-			@SuppressWarnings("rawtypes")
-			public Class getColumnClass(int columnIndex) {
-				return types[columnIndex];
-			}
-
-			public boolean isCellEditable(int rowIndex, int columnIndex) {
-				return canEdit[columnIndex];
-			}
-		});
+		defaultTableModel = new DefaultTableModel();
+		defaultTableModel.addColumn("ID");
+		defaultTableModel.addColumn("X");
+		defaultTableModel.addColumn("Y");
+		defaultTableModel.addColumn("R");
+		defaultTableModel.addColumn("A");
+		defaultTableModel.addColumn("V");
+		defaultTableModel.addColumn("D");
+				
+		tblPlane = new JTable(defaultTableModel);
+	
+		scpPlane = new JScrollPane(tblPlane);
 		
-		scpPlane = new javax.swing.JScrollPane();
-		scpPlane.setViewportView(tblPlane);
-		
-		if (tblPlane.getColumnModel().getColumnCount() > 0) {
-			tblPlane.getColumnModel().getColumn(0).setResizable(false);
-			tblPlane.getColumnModel().getColumn(0).setPreferredWidth(30);
-			tblPlane.getColumnModel().getColumn(1).setResizable(false);
-			tblPlane.getColumnModel().getColumn(1).setPreferredWidth(30);
-			tblPlane.getColumnModel().getColumn(2).setResizable(false);
-			tblPlane.getColumnModel().getColumn(2).setPreferredWidth(30);
-			tblPlane.getColumnModel().getColumn(3).setResizable(false);
-			tblPlane.getColumnModel().getColumn(3).setPreferredWidth(30);
-			tblPlane.getColumnModel().getColumn(4).setResizable(false);
-			tblPlane.getColumnModel().getColumn(4).setPreferredWidth(30);
-			tblPlane.getColumnModel().getColumn(5).setResizable(false);
-			tblPlane.getColumnModel().getColumn(5).setPreferredWidth(30);
-			tblPlane.getColumnModel().getColumn(6).setResizable(false);
-			tblPlane.getColumnModel().getColumn(6).setPreferredWidth(30);
-		}
-
-		btnAdd = new javax.swing.JButton();
+		btnAdd = new JButton();
 		btnAdd.setText("Add");
 		btnAdd.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				AdicionaAvio();
-				btnAdd.setEnabled(false);
+				setEnableBtnAdd(false);
+				AdicionaAviao();
+				
 			}
 		});
 
-		btnRemove = new javax.swing.JButton();
+		btnRemove = new JButton();
 		btnRemove.setText("Remove");
 		btnRemove.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,38 +109,38 @@ public class JFMain extends javax.swing.JFrame {
 			}
 		});
 
-		lblPlaneTable = new javax.swing.JLabel();
+		lblPlaneTable = new JLabel();
 		lblPlaneTable.setText("Plane table");
 		
-		lblReport = new javax.swing.JLabel();
+		lblReport = new JLabel();
 		lblReport.setText("Report");
 
-		pnlRadar = new javax.swing.JPanel();
+		pnlRadar = new JPanel();
 		pnlRadar.setBackground(colorTables);
 		pnlRadar.setPreferredSize(new java.awt.Dimension(400, 400));
 
-		javax.swing.GroupLayout pnlRadarLayout = new javax.swing.GroupLayout(pnlRadar);
+		GroupLayout pnlRadarLayout = new GroupLayout(pnlRadar);
 		pnlRadar.setLayout(pnlRadarLayout);
-		pnlRadarLayout.setHorizontalGroup(pnlRadarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+		pnlRadarLayout.setHorizontalGroup(pnlRadarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGap(0, 400, Short.MAX_VALUE));
-		pnlRadarLayout.setVerticalGroup(pnlRadarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+		pnlRadarLayout.setVerticalGroup(pnlRadarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGap(0, 400, Short.MAX_VALUE));
 
 		
 
-		jSeparator1 = new javax.swing.JSeparator();
-		jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+		jSeparator1 = new JSeparator();
+		jSeparator1.setOrientation(SwingConstants.VERTICAL);
 
-		txtReport = new javax.swing.JTextArea();
+		txtReport = new JTextArea();
 		txtReport.setEditable(false);
 		txtReport.setColumns(20);
 		txtReport.setRows(5);
 		txtReport.setFocusable(false);
 		
-		jScrollPane1 = new javax.swing.JScrollPane();
+		jScrollPane1 = new JScrollPane();
 		jScrollPane1.setViewportView(txtReport);		
 
-		btnScale = new javax.swing.JButton();
+		btnScale = new JButton();
 		btnScale.setBackground(colorFirstButton);
 		btnScale.setText("Scale");
 		btnScale.addActionListener(new java.awt.event.ActionListener() {
@@ -161,7 +149,7 @@ public class JFMain extends javax.swing.JFrame {
 			}
 		});
 
-		btnTranslate = new javax.swing.JButton();
+		btnTranslate = new JButton();
 		btnTranslate.setBackground(colorFirstButton);
 		btnTranslate.setText("Translate");
 		btnTranslate.addActionListener(new java.awt.event.ActionListener() {
@@ -170,7 +158,7 @@ public class JFMain extends javax.swing.JFrame {
 			}
 		});
 
-		btnRotate = new javax.swing.JButton();
+		btnRotate = new JButton();
 		btnRotate.setBackground(colorFirstButton);
 		btnRotate.setText("Rotate");
 		btnRotate.addActionListener(new java.awt.event.ActionListener() {
@@ -179,7 +167,7 @@ public class JFMain extends javax.swing.JFrame {
 			}
 		});
 
-		btnDistAirport = new javax.swing.JButton();
+		btnDistAirport = new JButton();
 		btnDistAirport.setBackground(colorSecondButton);
 		btnDistAirport.setText("Distance to Airport");
 		btnDistAirport.addActionListener(new java.awt.event.ActionListener() {
@@ -188,7 +176,7 @@ public class JFMain extends javax.swing.JFrame {
 			}
 		});
 
-		btnDistPlanes = new javax.swing.JButton();
+		btnDistPlanes = new JButton();
 		btnDistPlanes.setBackground(colorSecondButton);
 		btnDistPlanes.setText("Distance Airplanes");
 		btnDistPlanes.addActionListener(new java.awt.event.ActionListener() {
@@ -197,7 +185,7 @@ public class JFMain extends javax.swing.JFrame {
 			}
 		});
 
-		btnCollisionCourse = new javax.swing.JButton(); 
+		btnCollisionCourse = new JButton(); 
 		btnCollisionCourse.setBackground(colorSecondButton);
 		btnCollisionCourse.setText("Collision course");
 		btnCollisionCourse.addActionListener(new java.awt.event.ActionListener() {
@@ -206,148 +194,148 @@ public class JFMain extends javax.swing.JFrame {
 			}
 		});
 
-		javax.swing.GroupLayout pnlLayoutLayout = new javax.swing.GroupLayout(pnlLayout);
+		GroupLayout pnlLayoutLayout = new GroupLayout(pnlLayout);
 		pnlLayout.setLayout(pnlLayoutLayout);
 		pnlLayoutLayout.setHorizontalGroup(pnlLayoutLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(pnlLayoutLayout.createSequentialGroup().addGroup(pnlLayoutLayout
-						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addGroup(pnlLayoutLayout.createSequentialGroup().addGap(41, 41, 41)
 								.addGroup(pnlLayoutLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addComponent(pnlRadar, javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+										.addComponent(pnlRadar, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addComponent(jScrollPane1))
 								.addGap(18, 18, 18))
-						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLayoutLayout.createSequentialGroup()
+						.addGroup(GroupLayout.Alignment.TRAILING, pnlLayoutLayout.createSequentialGroup()
 								.addContainerGap()
-								.addGroup(pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+								.addGroup(pnlLayoutLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+										.addGroup(GroupLayout.Alignment.TRAILING,
 												pnlLayoutLayout.createSequentialGroup().addComponent(jLabel1)
 														.addGap(208, 208, 208))
-										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+										.addGroup(GroupLayout.Alignment.TRAILING,
 												pnlLayoutLayout.createSequentialGroup().addComponent(lblReport)
 														.addGap(195, 195, 195)))))
-						.addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10,
-								javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
-						.addGroup(pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+						.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 10,
+								GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+						.addGroup(pnlLayoutLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addGroup(GroupLayout.Alignment.TRAILING,
 										pnlLayoutLayout.createSequentialGroup()
-												.addComponent(btnCollisionCourse, javax.swing.GroupLayout.PREFERRED_SIZE,
-														150, javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(btnCollisionCourse, GroupLayout.PREFERRED_SIZE,
+														150, GroupLayout.PREFERRED_SIZE)
 												.addGap(133, 133, 133))
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+								.addGroup(GroupLayout.Alignment.TRAILING,
 										pnlLayoutLayout.createSequentialGroup().addComponent(jLabel3).addGap(149, 149,
 												149))))
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLayoutLayout.createSequentialGroup()
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+				.addGroup(GroupLayout.Alignment.TRAILING, pnlLayoutLayout.createSequentialGroup()
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(pnlLayoutLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addGroup(GroupLayout.Alignment.TRAILING,
 										pnlLayoutLayout.createSequentialGroup().addComponent(jLabel2).addGap(144, 144,
 												144))
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+								.addGroup(GroupLayout.Alignment.TRAILING,
 										pnlLayoutLayout.createSequentialGroup().addGroup(pnlLayoutLayout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+												.createParallelGroup(GroupLayout.Alignment.LEADING, false)
 												.addGroup(pnlLayoutLayout.createSequentialGroup()
 														.addComponent(btnDistAirport,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 150,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
+																GroupLayout.PREFERRED_SIZE, 150,
+																GroupLayout.PREFERRED_SIZE)
 														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																LayoutStyle.ComponentPlacement.RELATED,
+																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 														.addComponent(btnDistPlanes,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 150,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
+																GroupLayout.PREFERRED_SIZE, 150,
+																GroupLayout.PREFERRED_SIZE))
 												.addGroup(pnlLayoutLayout.createSequentialGroup().addGap(124, 124, 124)
 														.addComponent(lblPlaneTable))
-												.addComponent(scpPlane, javax.swing.GroupLayout.PREFERRED_SIZE, 0,
+												.addComponent(scpPlane, GroupLayout.PREFERRED_SIZE, 0,
 														Short.MAX_VALUE)
 												.addGroup(pnlLayoutLayout.createSequentialGroup()
 														.addComponent(btnAdd, 
-																	  javax.swing.GroupLayout.PREFERRED_SIZE, 
+																	  GroupLayout.PREFERRED_SIZE, 
 																	  98,
-																	  javax.swing.GroupLayout.PREFERRED_SIZE)
+																	  GroupLayout.PREFERRED_SIZE)
 														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																LayoutStyle.ComponentPlacement.RELATED,
+																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 														.addComponent(btnRemove,
-																      javax.swing.GroupLayout.PREFERRED_SIZE, 
+																      GroupLayout.PREFERRED_SIZE, 
 																      98,
-																      javax.swing.GroupLayout.PREFERRED_SIZE))
+																      GroupLayout.PREFERRED_SIZE))
 												.addGroup(pnlLayoutLayout.createSequentialGroup()
 														.addComponent(btnScale,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 98,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
+																GroupLayout.PREFERRED_SIZE, 98,
+																GroupLayout.PREFERRED_SIZE)
 														.addGap(18, 18, 18)
 														.addComponent(btnTranslate,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 98,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
+																GroupLayout.PREFERRED_SIZE, 98,
+																GroupLayout.PREFERRED_SIZE)
 														.addGap(18, 18, 18).addComponent(btnRotate,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 98,
-																javax.swing.GroupLayout.PREFERRED_SIZE)))
+																GroupLayout.PREFERRED_SIZE, 98,
+																GroupLayout.PREFERRED_SIZE)))
 												.addGap(46, 46, 46)))));
-		pnlLayoutLayout.setVerticalGroup(pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+		pnlLayoutLayout.setVerticalGroup(pnlLayoutLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(pnlLayoutLayout.createSequentialGroup().addContainerGap().addGroup(pnlLayoutLayout
-						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jSeparator1)
+						.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jSeparator1)
 						.addGroup(pnlLayoutLayout.createSequentialGroup()
-								.addGroup(pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addGroup(pnlLayoutLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
 										.addComponent(lblPlaneTable).addComponent(jLabel1))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addGroup(pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(pnlLayoutLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
 										.addGroup(pnlLayoutLayout.createSequentialGroup()
-												.addComponent(pnlRadar, javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8,
+												.addComponent(pnlRadar, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 8,
 														Short.MAX_VALUE)
 												.addComponent(lblReport)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
+												.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+												.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 130,
+														GroupLayout.PREFERRED_SIZE))
 										.addGroup(pnlLayoutLayout.createSequentialGroup()
-												.addComponent(scpPlane, javax.swing.GroupLayout.PREFERRED_SIZE, 229,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												.addComponent(scpPlane, GroupLayout.PREFERRED_SIZE, 229,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 												.addGroup(pnlLayoutLayout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+														.createParallelGroup(GroupLayout.Alignment.BASELINE)
 														.addComponent(btnAdd).addComponent(btnRemove))
 												.addGap(33, 33, 33).addComponent(jLabel2)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 												.addGroup(pnlLayoutLayout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+														.createParallelGroup(GroupLayout.Alignment.BASELINE)
 														.addComponent(btnScale,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 48,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
+																GroupLayout.PREFERRED_SIZE, 48,
+																GroupLayout.PREFERRED_SIZE)
 														.addComponent(btnTranslate,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 48,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
+																GroupLayout.PREFERRED_SIZE, 48,
+																GroupLayout.PREFERRED_SIZE)
 														.addComponent(btnRotate,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 48,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
+																GroupLayout.PREFERRED_SIZE, 48,
+																GroupLayout.PREFERRED_SIZE))
 												.addGap(27, 27, 27).addComponent(jLabel3).addGap(18, 18, 18)
 												.addGroup(pnlLayoutLayout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+														.createParallelGroup(GroupLayout.Alignment.BASELINE)
 														.addComponent(btnDistPlanes,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 50,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
+																GroupLayout.PREFERRED_SIZE, 50,
+																GroupLayout.PREFERRED_SIZE)
 														.addComponent(btnDistAirport,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 50,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-												.addComponent(btnCollisionCourse, javax.swing.GroupLayout.PREFERRED_SIZE,
-														50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																GroupLayout.PREFERRED_SIZE, 50,
+																GroupLayout.PREFERRED_SIZE))
+												.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+												.addComponent(btnCollisionCourse, GroupLayout.PREFERRED_SIZE,
+														50, GroupLayout.PREFERRED_SIZE)
 												.addGap(0, 0, Short.MAX_VALUE)))))
 						.addContainerGap()));
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				pnlLayout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-				javax.swing.GroupLayout.PREFERRED_SIZE));
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				pnlLayout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-				javax.swing.GroupLayout.PREFERRED_SIZE));
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(
+				pnlLayout, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+				GroupLayout.PREFERRED_SIZE));
+		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(
+				pnlLayout, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+				GroupLayout.PREFERRED_SIZE));
 
 		pack();
 		setLocationRelativeTo(null);
@@ -444,9 +432,25 @@ public class JFMain extends javax.swing.JFrame {
 	}
 	
 	
-	private void AdicionaAvio() {
-		JFAdiconaAviao adicionaAvi = new JFAdiconaAviao();
+	private void AdicionaAviao() {
+		JFAdiconaAviao adicionaAvi = new JFAdiconaAviao(this);
 		adicionaAvi.setVisible(true);
+	}
+	
+	public void setEnableBtnAdd(boolean enable) {
+		btnAdd.setEnabled(enable);
+	}
+	
+	public void addGrade(Aviao a) {
+		defaultTableModel.addRow(new Object[]{
+				a.getCodigo(),
+				a.getPontoX(),
+				a.getPontoY(),
+				a.getRaio(),
+				a.getAngulo(),
+				a.getVelocidade(),
+				a.getDirecao(),
+		});
 	}
 	
 	
