@@ -1,11 +1,16 @@
 package main.frames;
 
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,8 +23,8 @@ import javax.swing.JTextArea;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
 
 import main.model.Aviao;
 
@@ -55,17 +60,20 @@ public class JFMain extends JFrame {
 	private DefaultTableModel defaultTableModel;
 	
 	private JTextArea txtReport;
+	
+	public List<Aviao> avioes;
 
 	public JFMain() {
 		initComponents();
 		updateTable();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void initComponents() {
 		final java.awt.Color colorFirstButton = new java.awt.Color(230, 230, 230);
 		final java.awt.Color colorSecondButton = new java.awt.Color(153, 230, 255);
 		final java.awt.Color colorTables = new java.awt.Color(105,105,105);
+		
+		avioes = new ArrayList<>();
 		
 		jLabel1 = new JLabel();
 		jLabel2 = new JLabel();
@@ -107,7 +115,7 @@ public class JFMain extends JFrame {
 		btnRemove.setText("Remove");
 		btnRemove.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnRemoverActionPerformed(evt);
+				RemoveAviao();
 			}
 		});
 
@@ -438,6 +446,19 @@ public class JFMain extends JFrame {
 		JFAdiconaAviao adicionaAvi = new JFAdiconaAviao(this);
 		adicionaAvi.setVisible(true);
 	}
+	private void RemoveAviao() {
+		System.out.println(avioes);
+		avioes.remove(tblPlane.getSelectedRow());
+		defaultTableModel.setRowCount(0);
+		pnlRadar.removeAll();
+		updateTable();
+		System.out.println("___________");
+		System.out.println(avioes);
+		for (Aviao aviao : avioes) {
+			addGrade(aviao);
+		};
+		
+	};
 	
 	public void setEnableBtnAdd(boolean enable) {
 		btnAdd.setEnabled(enable);
@@ -460,15 +481,15 @@ public class JFMain extends JFrame {
 	public void addImagePanel(Aviao aviao) {
 		try {
 			URL url = getClass().getResource("../images/plane.png");
-			
 			BufferedImage img = ImageIO.read(url);
 			
-			int x = (int) (200 + aviao.getPontoX() - (30/2));
-	        int y = (int) (200 - aviao.getPontoY()- (30/2));
+			img = addRotacion(img, - (aviao.getDirecao() - 45.0));
+			
+			int x = (int) (200 + aviao.getPontoX() - (42/2));
+	        int y = (int) (200 - aviao.getPontoY()- (42/2));
 	        
 			JLabel label = new JLabel(new ImageIcon(img));
-			
-			label.setBounds(x, y, 30, 30);
+			label.setBounds(x, y, 42, 42);
 			
 			pnlRadar.add(label);
 			pnlRadar.revalidate();
@@ -476,10 +497,44 @@ public class JFMain extends JFrame {
 			
 		} catch (Exception e) {
 			System.out.println(e);
-		}
-		
+		}	
 	}
 	
+	public BufferedImage addRotacion(BufferedImage img, double direcao) {
+		direcao %= 360;
+        if (direcao < 0) {
+        	direcao+= 360;
+        }
+
+        AffineTransform tx = new AffineTransform();
+        tx.rotate(Math.toRadians(direcao), img.getWidth() / 2.0, img.getHeight() / 2.0);
+
+        double ytrans = 0;
+        double xtrans = 0;
+        if( direcao <= 90 ){
+            xtrans = tx.transform(new Point2D.Double(0, img.getHeight()), null).getX();
+            ytrans = tx.transform(new Point2D.Double(0.0, 0.0), null).getY();
+        }
+        else if( direcao <= 180 ){
+            xtrans = tx.transform(new Point2D.Double(img.getWidth(), img.getHeight()), null).getX();
+            ytrans = tx.transform(new Point2D.Double(0, img.getHeight()), null).getY();
+        }
+        else if( direcao <= 270 ){
+            xtrans = tx.transform(new Point2D.Double(img.getWidth(), 0), null).getX();
+            ytrans = tx.transform(new Point2D.Double(img.getWidth(), img.getHeight()), null).getY();
+        }
+        else{
+            xtrans = tx.transform(new Point2D.Double(0, 0), null).getX();
+            ytrans = tx.transform(new Point2D.Double(img.getWidth(), 0), null).getY();
+        }
+
+        AffineTransform translationTransform = new AffineTransform();
+        translationTransform.translate(-xtrans, -ytrans);
+        tx.preConcatenate(translationTransform);
+
+        return new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR).filter(img, null);
+		
+	}
 	
 }
 

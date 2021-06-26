@@ -77,7 +77,7 @@ public class JFAdiconaAviao extends JDialog {
 		lblTitle = new JLabel("Adicione um Avi\u00E3o");
 		pnlTitle.add(lblTitle);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setIcon(new ImageIcon(JFAdiconaAviao.class.getResource("/main/images/Icon/baseline_flight_black_24dp (2).png")));
+		lblTitle.setIcon(new ImageIcon(JFAdiconaAviao.class.getResource("/main/images/Icon/baseline.png")));
 		lblTitle.setFont(new Font("Malgun Gothic Semilight", Font.BOLD, 20));
 			
 		rdbCartesiana = new JRadioButton("Cartesiana");
@@ -300,6 +300,7 @@ public class JFAdiconaAviao extends JDialog {
 			}
 			
 			System.out.println(aviao);
+			p.avioes.add(aviao);
 			p.addGrade(aviao);
 			this.dispose();
 		} catch (Exception e) {
