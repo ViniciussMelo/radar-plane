@@ -37,6 +37,7 @@ public class JFAdiconaAviao extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+    private javax.swing.JPanel pnlLayout;
 	private static final long serialVersionUID = 1L;
 	private final JPanel pnlPrincipal = new JPanel();
 	private JTextField edtX;
@@ -63,13 +64,17 @@ public class JFAdiconaAviao extends JDialog {
 	public JFAdiconaAviao(JFMain p) {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setLocationRelativeTo(this);	
+		setLocationRelativeTo(this);
 		setModal(true);
 		setTitle("Cadastro de avi\u00E3o");
-		setBounds(100, 100, 408, 322);
+		setBounds(300, 300, 408, 322);
 		getContentPane().setLayout(new BorderLayout());
 		pnlPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(pnlPrincipal, BorderLayout.CENTER);
+		setPreferredSize(new java.awt.Dimension(350, 300));
+		setLocationRelativeTo(null);
+		
+		pnlLayout = new javax.swing.JPanel();
 		
 		pnlTitle = new JPanel();
 		pnlTitle.setBorder(new LineBorder(new Color(0, 0, 0), 3, true));
@@ -145,6 +150,7 @@ public class JFAdiconaAviao extends JDialog {
 		
 		
 		GroupLayout gl_pnlPrincipal = new GroupLayout(pnlPrincipal);
+		pnlLayout.setLayout(gl_pnlPrincipal);
 		gl_pnlPrincipal.setHorizontalGroup(
 			gl_pnlPrincipal.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnlPrincipal.createSequentialGroup()
@@ -300,8 +306,8 @@ public class JFAdiconaAviao extends JDialog {
 			}
 			
 			System.out.println(aviao);
-			p.avioes.add(aviao);
-			p.addGrade(aviao);
+			p.planeTableModel.addAviao(aviao);
+			p.updateTable();
 			this.dispose();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Preencha os dados Corretamente");

@@ -4,6 +4,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,10 +12,12 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -25,11 +28,13 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
-
+import main.components.PlaneTableModel;
 import main.model.Aviao;
 
 @SuppressWarnings("serial")
 public class JFMain extends JFrame {
+	public PlaneTableModel planeTableModel = new PlaneTableModel();
+	
 	private JLabel jLabel1;
 	private JLabel jLabel2;
 	private JLabel jLabel3;
@@ -134,9 +139,7 @@ public class JFMain extends JFrame {
 		pnlRadarLayout.setHorizontalGroup(pnlRadarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGap(0, 400, Short.MAX_VALUE));
 		pnlRadarLayout.setVerticalGroup(pnlRadarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGap(0, 400, Short.MAX_VALUE));
-
-		
+				.addGap(0, 400, Short.MAX_VALUE));		
 
 		jSeparator1 = new JSeparator();
 		jSeparator1.setOrientation(SwingConstants.VERTICAL);
@@ -155,7 +158,7 @@ public class JFMain extends JFrame {
 		btnScale.setText("Scale");
 		btnScale.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnScaleActionPerformed(evt);
+				btnScaleActionPerformed(evt);
 			}
 		});
 
@@ -351,15 +354,31 @@ public class JFMain extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
-	private void updateTable() {
+	public final void updateTable() {
+		this.planeTableModel.update();
+        this.tblPlane.setModel(this.planeTableModel);
+        
+        this.pnlRadar.removeAll();
+        
+        for (int i = 0; i < planeTableModel.getRowCount(); i++) {
+            try {
+                JLabel label = generatePlaneImage(planeTableModel.getPlane(i));
+                pnlRadar.add(label);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        }
+        
 		startPlaneLayout();
+		pnlRadar.revalidate();
+        pnlRadar.repaint();
 	}
 	
 	private void startPlaneLayout() {
 		URL url = getClass().getResource("../images/airport.png");        
         JLabel label = new JLabel(new ImageIcon(url));
         label.setBounds(201 - (30/2), 200 - (30/2), 30, 30);
-       // pnlRadar.add(label);
+        pnlRadar.add(label);
         
         // Horizontal lines
         JSeparator sep1 = new JSeparator();
@@ -536,5 +555,69 @@ public class JFMain extends JFrame {
 		
 	}
 	
-}
+	private void btnScaleActionPerformed(java.awt.event.ActionEvent evt) {
+		int selectedLine = tblPlane.getSelectedRow();
+		
+		if(selectedLine < 0) {
+			JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
+			return;
+		}
+		
+		Aviao plane = planeTableModel.getPlane(selectedLine);
+		
+		JFScale scaleFrame = new JFScale(this, plane);
+		scaleFrame.setVisible(true);
+	}
+	
+	private JLabel generatePlaneImage(Aviao aviao) throws IOException {
+		URL url = getClass().getResource("../images/plane.png");
+        
+        BufferedImage img = ImageIO.read(url);
+        
+        img = rotateImage(img, -1 * (aviao.getDirecao() - 45.0));
+        
+        Icon icon = new ImageIcon(img);
+        JLabel label = new JLabel(icon);
+        
+        int x = (int) ((aviao.getPontoX() > 0) ? 200 + aviao.getPontoX() : 200 + aviao.getPontoX());
+        int y = (int) ((aviao.getPontoY() > 0) ? 200 - aviao.getPontoY() : 200 - aviao.getPontoY());
+        
+        label.setBounds(x - (30/2), y - (30/2), 30, 30);
+        
+        return label;
+	}
+	
+	public static BufferedImage rotateImage(BufferedImage imagem, double angle) {
+		angle %= 360;
+        if (angle < 0) angle += 360;
+
+        AffineTransform tx = new AffineTransform();
+        tx.rotate(Math.toRadians(angle), imagem.getWidth() / 2.0, imagem.getHeight() / 2.0);
+
+        double ytrans = 0;
+        double xtrans = 0;
+        if( angle <= 90 ){
+            xtrans = tx.transform(new Point2D.Double(0, imagem.getHeight()), null).getX();
+            ytrans = tx.transform(new Point2D.Double(0.0, 0.0), null).getY();
+        }
+        else if( angle <= 180 ){
+            xtrans = tx.transform(new Point2D.Double(imagem.getWidth(), imagem.getHeight()), null).getX();
+            ytrans = tx.transform(new Point2D.Double(0, imagem.getHeight()), null).getY();
+        }
+        else if( angle <= 270 ){
+            xtrans = tx.transform(new Point2D.Double(imagem.getWidth(), 0), null).getX();
+            ytrans = tx.transform(new Point2D.Double(imagem.getWidth(), imagem.getHeight()), null).getY();
+        }
+        else{
+            xtrans = tx.transform(new Point2D.Double(0, 0), null).getX();
+            ytrans = tx.transform(new Point2D.Double(imagem.getWidth(), 0), null).getY();
+        }
+
+        AffineTransform translationTransform = new AffineTransform();
+        translationTransform.translate(-xtrans, -ytrans);
+        tx.preConcatenate(translationTransform);
+
+        return new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR).filter(imagem, null);
+	}
+} 
 
