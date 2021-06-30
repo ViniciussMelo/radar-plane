@@ -175,7 +175,7 @@ public class JFMain extends JFrame {
 		btnRotate.setText("Rotate");
 		btnRotate.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnRotateActionPerformed(evt);
+				btnRotateActionPerformed(evt);
 			}
 		});
 
@@ -624,6 +624,19 @@ public class JFMain extends JFrame {
             Aviao plane = planeTableModel.getPlane(selectedLine);
             
             JFTranslate frameTranslate = new JFTranslate(this, plane);
+            frameTranslate.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
+        }
+	}
+	
+	private void btnRotateActionPerformed(java.awt.event.ActionEvent evt) {
+		int selectedLine = tblPlane.getSelectedRow();
+
+        if (selectedLine >= 0) {
+            Aviao plane = planeTableModel.getPlane(selectedLine);
+            
+            JFRotate frameTranslate = new JFRotate(this, plane);
             frameTranslate.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");

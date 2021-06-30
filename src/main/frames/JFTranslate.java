@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import main.Util.Calculo;
 import main.model.Aviao;
 
+@SuppressWarnings("serial")
 public class JFTranslate extends javax.swing.JFrame {
 	private final JFMain principal;
     private final Aviao plane;
