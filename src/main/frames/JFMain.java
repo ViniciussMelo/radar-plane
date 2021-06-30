@@ -120,7 +120,7 @@ public class JFMain extends JFrame {
 		btnRemove.setText("Remove");
 		btnRemove.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				RemoveAviao();
+				btnRemovePlaneActionPerformed(evt);
 			}
 		});
 
@@ -465,18 +465,15 @@ public class JFMain extends JFrame {
 		JFAdiconaAviao adicionaAvi = new JFAdiconaAviao(this);
 		adicionaAvi.setVisible(true);
 	}
-	private void RemoveAviao() {
-		System.out.println(avioes);
-		avioes.remove(tblPlane.getSelectedRow());
-		defaultTableModel.setRowCount(0);
-		pnlRadar.removeAll();
-		updateTable();
-		System.out.println("___________");
-		System.out.println(avioes);
-		for (Aviao aviao : avioes) {
-			addGrade(aviao);
-		};
-		
+	private void btnRemovePlaneActionPerformed(java.awt.event.ActionEvent evt) {
+		int linhaSelecionada = tblPlane.getSelectedRow();
+
+        if (linhaSelecionada >= 0) {
+            planeTableModel.removeAviao(linhaSelecionada);
+            updateTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
+        }		
 	};
 	
 	public void setEnableBtnAdd(boolean enable) {
