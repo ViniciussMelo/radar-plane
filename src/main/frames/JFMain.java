@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -167,7 +166,7 @@ public class JFMain extends JFrame {
 		btnTranslate.setText("Translate");
 		btnTranslate.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnTranslateActionPerformed(evt);
+				btnTranslateActionPerformed(evt);
 			}
 		});
 
@@ -465,6 +464,7 @@ public class JFMain extends JFrame {
 		JFAdiconaAviao adicionaAvi = new JFAdiconaAviao(this);
 		adicionaAvi.setVisible(true);
 	}
+	
 	private void btnRemovePlaneActionPerformed(java.awt.event.ActionEvent evt) {
 		int linhaSelecionada = tblPlane.getSelectedRow();
 
@@ -615,6 +615,19 @@ public class JFMain extends JFrame {
         tx.preConcatenate(translationTransform);
 
         return new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR).filter(imagem, null);
+	}
+
+	private void btnTranslateActionPerformed(java.awt.event.ActionEvent evt) {
+		int selectedLine = tblPlane.getSelectedRow();
+
+        if (selectedLine >= 0) {
+            Aviao plane = planeTableModel.getPlane(selectedLine);
+            
+            JFTranslate frameTranslate = new JFTranslate(this, plane);
+            frameTranslate.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
+        }
 	}
 } 
 

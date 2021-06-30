@@ -5,21 +5,23 @@ import javax.swing.JOptionPane;
 import main.Util.Calculo;
 import main.model.Aviao;
 
-@SuppressWarnings("serial")
-public class JFScale extends javax.swing.JFrame {
+public class JFTranslate extends javax.swing.JFrame {
 	private final JFMain principal;
     private final Aviao plane;
     
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnScale;
+    private javax.swing.JButton btnTranslate;
+    
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    
     private javax.swing.JPanel pnlLayout;
+    
     private javax.swing.JTextField txtX;
     private javax.swing.JTextField txtY;
     
-    public JFScale(JFMain main, Aviao plane) {
+    public JFTranslate(JFMain main, Aviao plane) {
     	initComponents();
     	
     	this.principal = main;
@@ -27,94 +29,91 @@ public class JFScale extends javax.swing.JFrame {
     }
     
     private void initComponents() {
-
-        pnlLayout = new javax.swing.JPanel();
-        pnlLayout.setPreferredSize(new java.awt.Dimension(400, 300));
-        
+    	pnlLayout = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        
-        jLabel1.setText("X(%) :");
-        jLabel2.setText("Y(%) :");
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14));
-        jLabel3.setText("Scale");
-        
         txtX = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
         txtY = new javax.swing.JTextField();
+        btnCancel = new javax.swing.JButton();
+        btnTranslate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Scale");
-        
-        btnScale = new javax.swing.JButton();
-        btnScale.setText("Scale");
-        btnScale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnScaleActionPerformed(evt);
-            }
-        });
-        
-        btnCancel = new javax.swing.JButton();
+        setTitle("Translate");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14));
+        jLabel1.setText("Translandar");
+
+        jLabel2.setText("X:");
+
+        jLabel3.setText("Y:");
+
         btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
-        });        
+        });
+
+        btnTranslate.setText("Translate");
+        btnTranslate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTranslateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlLayoutLayout = new javax.swing.GroupLayout(pnlLayout);
         pnlLayout.setLayout(pnlLayoutLayout);
         pnlLayoutLayout.setHorizontalGroup(
             pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlLayoutLayout.createSequentialGroup()
-                .addGap(67, 67, 67)
                 .addGroup(pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlLayoutLayout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(btnScale)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancel))
+                        .addGap(114, 114, 114)
+                        .addComponent(jLabel1))
                     .addGroup(pnlLayoutLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtX, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(55, 55, 55)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtY, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(49, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLayoutLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(119, 119, 119))
+                        .addComponent(txtX, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtY, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlLayoutLayout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addComponent(btnTranslate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancel)))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         pnlLayoutLayout.setVerticalGroup(
             pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlLayoutLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(32, 32, 32)
                 .addGroup(pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
+                    .addComponent(txtX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
                     .addComponent(txtY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(32, 32, 32)
                 .addGroup(pnlLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnScale)
-                    .addComponent(btnCancel))
-                .addContainerGap(90, Short.MAX_VALUE))
+                    .addComponent(btnCancel)
+                    .addComponent(btnTranslate))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlLayout, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnlLayout, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlLayout, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnlLayout, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -125,7 +124,7 @@ public class JFScale extends javax.swing.JFrame {
         this.dispose();
     }
     
-    private void btnScaleActionPerformed(java.awt.event.ActionEvent evt) {
+    private void btnTranslateActionPerformed(java.awt.event.ActionEvent evt) {
         if (txtX.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Enter the value of X.");
             txtX.selectAll();
@@ -156,7 +155,7 @@ public class JFScale extends javax.swing.JFrame {
             return;
         }
         
-        Calculo.escalonar(plane, x, y);
+        Calculo.transladar(plane, x, y);
         principal.updateTable();
         
         this.dispose();
