@@ -90,7 +90,7 @@ public class Calculo {
 		return a;
 	}
 	
-	private static InfoColisao calcularColisao(Aviao a, Aviao b) {
+	public static InfoColisao calcularColisao(Aviao a, Aviao b) {
 		InfoColisao info = new InfoColisao();
 		info.setAviaoA(a.getCodigo());
 		info.setAviaoB(b.getCodigo());

@@ -27,8 +27,10 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import main.Util.Calculo;
 import main.components.PlaneTableModel;
 import main.model.Aviao;
+import main.model.InfoColisao;
 
 @SuppressWarnings("serial")
 public class JFMain extends JFrame {
@@ -184,7 +186,7 @@ public class JFMain extends JFrame {
 		btnDistAirport.setText("Distance to Airport");
 		btnDistAirport.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnDistAirportActionPerformed(evt);
+				distanceAirport();
 			}
 		});
 
@@ -193,7 +195,7 @@ public class JFMain extends JFrame {
 		btnDistPlanes.setText("Distance Airplanes");
 		btnDistPlanes.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnDistPlanesActionPerformed(evt);
+				distancePlanes();
 			}
 		});
 
@@ -202,7 +204,7 @@ public class JFMain extends JFrame {
 		btnCollisionCourse.setText("Collision course");
 		btnCollisionCourse.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnCollisionCourseActionPerformed(evt);
+				tempColiton();
 			}
 		});
 
@@ -384,7 +386,7 @@ public class JFMain extends JFrame {
         sep1.setBounds(0, 50, pnlRadar.getWidth(), 5);
         sep1.setVisible(true);
         pnlRadar.add(sep1);
-        
+                
         JSeparator sep2 = new JSeparator();
         sep2.setBounds(0, 100, pnlRadar.getWidth(), 5);
         sep2.setVisible(true);
@@ -642,5 +644,112 @@ public class JFMain extends JFrame {
             JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
         }
 	}
+	
+	private void distanceAirport(){
+		try {
+			Double distancia = Double.parseDouble(JOptionPane.showInputDialog("informe a distancia mimima o aero porto!"));
+			
+			for (int i=0; i < planeTableModel.getRowCount(); i++ ) {
+				Aviao aviaoA = planeTableModel.getPlane(i);
+				
+					
+					double distanciaCalc = Calculo.distancia(0,0,aviaoA.getPontoX(), aviaoA.getPontoY());
+					
+					if (distanciaCalc <= distancia) {
+						txtReport.setText("o aviao A: " + aviaoA.getCodigo() 
+										+ "esta perto do aerp portp " 
+								);
+					}
+					
+				}
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,"Algo deu arado: " + e);
+		}
+		
+		
+	}
+	
+
+	
+	
+	private void distancePlanes() {
+		try {
+			Double distancia = Double.parseDouble(JOptionPane.showInputDialog("informe a distancia mimima!"));
+			
+			for (int i=0; i < planeTableModel.getRowCount(); i++ ) {
+				Aviao aviaoA = planeTableModel.getPlane(i);
+				
+				for (int j=0; j < planeTableModel.getRowCount(); j++ ) {
+					Aviao aviaoB = planeTableModel.getPlane(j);
+					if(aviaoA.getCodigo() == aviaoB.getCodigo()) {
+						continue;
+					}
+					
+					double distanciaCalc = Calculo.distancia(aviaoA.getPontoX(), aviaoA.getPontoY(), aviaoB.getPontoX(), aviaoB.getPontoY());
+					
+					if (distanciaCalc <= distancia) {
+						txtReport.setText("o aviao A: " + aviaoA.getCodigo() 
+										+ "vai esta perto " + aviaoB.getCodigo()
+								);
+					}
+					
+				}
+				
+			}
+			
+			
+			
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,"Algo deu arado: " + e);
+		}
+		
+		
+	}
+	
+	
+	
+	private void tempColiton() {//GEN-FIRST:event_btnRotaColisaoActionPerformed
+        if (planeTableModel.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Não existem aviões no radar.");
+            return;
+        }
+        
+        double tempoMinimo;
+        
+        try {
+            tempoMinimo = Double.parseDouble(JOptionPane.showInputDialog("Tempo mínimo de distância no ponto de colisão para alerta (Segundos):"));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Informe uma quantidade válida.");
+            return;
+        }
+        
+        
+        StringBuilder builderRelatorio = new StringBuilder();
+        
+        for (int i = 0; i < planeTableModel.getRowCount(); i++) {
+            Aviao aviaoA = planeTableModel.getPlane(i);
+            
+            for (int j = i; j < planeTableModel.getRowCount(); j++) {
+                Aviao aviaoB = planeTableModel.getPlane(j);
+                
+                if (aviaoA.getCodigo() == aviaoB.getCodigo()) {
+                    continue;
+                }
+                
+                InfoColisao info = Calculo.calcularColisao(aviaoA, aviaoB);
+                
+                if (info.getDiferencaTempo() <= tempoMinimo) {
+                	builderRelatorio.append(">>> Aviões em rota de colisão <<<\n");
+                	builderRelatorio.append("Aviai A : " +aviaoA.getCodigo()  + "Aviao B" + aviaoB.getCodigo() + "\n");
+                    
+                }
+            }
+        }
+        txtReport.setText(builderRelatorio.toString());        
+    }
+	
+	
 } 
 

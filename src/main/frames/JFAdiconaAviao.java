@@ -1,36 +1,32 @@
 package main.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
+import javax.swing.ButtonGroup;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import main.Util.Calculo;
 import main.model.Aviao;
-
-import java.awt.Color;
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
-import javax.swing.JTextField;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 public class JFAdiconaAviao extends JDialog {
 
@@ -66,7 +62,7 @@ public class JFAdiconaAviao extends JDialog {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setLocationRelativeTo(this);
 		setModal(true);
-		setTitle("Cadastro de avi\u00E3o");
+		setTitle("plane registration");
 		setBounds(300, 300, 408, 322);
 		getContentPane().setLayout(new BorderLayout());
 		pnlPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -79,13 +75,13 @@ public class JFAdiconaAviao extends JDialog {
 		pnlTitle = new JPanel();
 		pnlTitle.setBorder(new LineBorder(new Color(0, 0, 0), 3, true));
 		
-		lblTitle = new JLabel("Adicione um Avi\u00E3o");
+		lblTitle = new JLabel("Add an Airplane");
 		pnlTitle.add(lblTitle);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setIcon(new ImageIcon(JFAdiconaAviao.class.getResource("/main/images/Icon/baseline.png")));
 		lblTitle.setFont(new Font("Malgun Gothic Semilight", Font.BOLD, 20));
 			
-		rdbCartesiana = new JRadioButton("Cartesiana");
+		rdbCartesiana = new JRadioButton("Cartesian");
 		rdbCartesiana.setSelected(true);
 		rdbCartesiana.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
@@ -108,27 +104,27 @@ public class JFAdiconaAviao extends JDialog {
 		edtY = new JTextField();
 		edtY.setColumns(10);
 		
-		lblRaio = new JLabel("Raio:");
+		lblRaio = new JLabel("Lightning:");
 		lblRaio.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblRaio.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		edtRaio = new JTextField();
 		edtRaio.setEditable(false);
 		edtRaio.setColumns(10);
 		
-		lblVelocidade = new JLabel("Velocidade:");
+		lblVelocidade = new JLabel("Speed:");
 		lblVelocidade.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblVelocidade.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		edtVelocidade = new JTextField();
 		edtVelocidade.setColumns(10);
 			
-		lblAngulo = new JLabel("\u00C2ngulo:");
+		lblAngulo = new JLabel("Angle:");
 		lblAngulo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblAngulo.setFont(new Font("Tahoma", Font.PLAIN, 16));	
 		edtAngulo = new JTextField();
 		edtAngulo.setEditable(false);
 		edtAngulo.setColumns(10);
 		
-		lblDirecao = new JLabel("Dire\u00E7\u00E3o:");
+		lblDirecao = new JLabel("Direction:");
 		lblDirecao.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDirecao.setFont(new Font("Tahoma", Font.PLAIN, 16));		
 		edtDirecao = new JTextField();
@@ -139,12 +135,12 @@ public class JFAdiconaAviao extends JDialog {
 		getContentPane().add(pnlButton, BorderLayout.SOUTH);
 		pnlButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		btnSalvar = new JButton("Salvar");
+		btnSalvar = new JButton("Save");
 		pnlButton.add(btnSalvar);
 		getRootPane().setDefaultButton(btnSalvar);
 		
 		
-        btnCancel = new JButton("Cancelar");
+        btnCancel = new JButton("Cancel");
 		btnCancel.setActionCommand("Cancel");
 		pnlButton.add(btnCancel);
 		
@@ -310,7 +306,7 @@ public class JFAdiconaAviao extends JDialog {
 			p.updateTable();
 			this.dispose();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Preencha os dados Corretamente");
+			JOptionPane.showMessageDialog(null, "Fill in the data correctly");
 		}	
 	}
 	
