@@ -616,7 +616,7 @@ public class JFMain extends JFrame {
 			}
 					
 		}
-		if(!stringBuilder.isEmpty()) {
+		if(stringBuilder.length() != 0) {
 			txtReport.setText(stringBuilder.toString());
 		}else {
 			txtReport.setText("There is no plane below the minimum distance from the airport!");
@@ -650,7 +650,7 @@ public class JFMain extends JFrame {
 			}		
 		}
 		
-		if(!stringBuilder.isEmpty()) {
+		if(stringBuilder.length() != 0) {
 			txtReport.setText(stringBuilder.toString());
 		}else {
 			txtReport.setText("There is no plane below the minimum distance of another plane!");
@@ -695,7 +695,7 @@ public class JFMain extends JFrame {
                 }
             }
         }
-        if(!stringBuilder.isEmpty()) {
+        if(stringBuilder.length() != 0) {
 			txtReport.setText(stringBuilder.toString());
 		}else {
 			txtReport.setText("There is no plane on a collision course for the defined time!");
