@@ -485,7 +485,7 @@ public class JFMain extends JFrame {
 		btnAdd.setEnabled(enable);
 	}
 	
-	public void addGrade(Aviao aviao) {
+	public void addGrade(Aviao aviao) throws IOException {
 		aviao.setCodigo(defaultTableModel.getRowCount() + 1);
 		defaultTableModel.addRow(new Object[]{
 												aviao.getCodigo(),
@@ -496,66 +496,12 @@ public class JFMain extends JFrame {
 												aviao.getVelocidade(),
 												aviao.getDirecao(),
 											  });
-		addImagePanel(aviao);
+		generatePlaneImage(aviao);
 	}
 	
-	public void addImagePanel(Aviao aviao) {
-		try {
-			URL url = getClass().getResource("../images/plane.png");
-			BufferedImage img = ImageIO.read(url);
-			
-			img = addRotacion(img, - (aviao.getDirecao() - 45.0));
-			
-			int x = (int) (200 + aviao.getPontoX() - (42/2));
-	        int y = (int) (200 - aviao.getPontoY()- (42/2));
-	        
-			JLabel label = new JLabel(new ImageIcon(img));
-			label.setBounds(x, y, 42, 42);
-			
-			pnlRadar.add(label);
-			pnlRadar.revalidate();
-			pnlRadar.repaint();
-			
-		} catch (Exception e) {
-			System.out.println(e);
-		}	
-	}
 	
-	public BufferedImage addRotacion(BufferedImage img, double direcao) {
-		direcao %= 360;
-        if (direcao < 0) {
-        	direcao+= 360;
-        }
-
-        AffineTransform tx = new AffineTransform();
-        tx.rotate(Math.toRadians(direcao), img.getWidth() / 2.0, img.getHeight() / 2.0);
-
-        double ytrans = 0;
-        double xtrans = 0;
-        if( direcao <= 90 ){
-            xtrans = tx.transform(new Point2D.Double(0, img.getHeight()), null).getX();
-            ytrans = tx.transform(new Point2D.Double(0.0, 0.0), null).getY();
-        }
-        else if( direcao <= 180 ){
-            xtrans = tx.transform(new Point2D.Double(img.getWidth(), img.getHeight()), null).getX();
-            ytrans = tx.transform(new Point2D.Double(0, img.getHeight()), null).getY();
-        }
-        else if( direcao <= 270 ){
-            xtrans = tx.transform(new Point2D.Double(img.getWidth(), 0), null).getX();
-            ytrans = tx.transform(new Point2D.Double(img.getWidth(), img.getHeight()), null).getY();
-        }
-        else{
-            xtrans = tx.transform(new Point2D.Double(0, 0), null).getX();
-            ytrans = tx.transform(new Point2D.Double(img.getWidth(), 0), null).getY();
-        }
-
-        AffineTransform translationTransform = new AffineTransform();
-        translationTransform.translate(-xtrans, -ytrans);
-        tx.preConcatenate(translationTransform);
-
-        return new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR).filter(img, null);
-		
-	}
+	
+	
 	
 	private void btnScaleActionPerformed(java.awt.event.ActionEvent evt) {
 		int selectedLine = tblPlane.getSelectedRow();
@@ -711,6 +657,7 @@ public class JFMain extends JFrame {
         }
         
         double tempoMinimo;
+        txtReport.setText(null);
         
         try {
             tempoMinimo = Double.parseDouble(JOptionPane.showInputDialog("Minimum distance to alert collision (Segundos):"));
