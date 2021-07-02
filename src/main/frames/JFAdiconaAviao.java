@@ -104,7 +104,7 @@ public class JFAdiconaAviao extends JDialog {
 		edtY = new JTextField();
 		edtY.setColumns(10);
 		
-		lblRaio = new JLabel("Lightning:");
+		lblRaio = new JLabel("Raio:");
 		lblRaio.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblRaio.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		edtRaio = new JTextField();

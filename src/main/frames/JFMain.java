@@ -80,7 +80,7 @@ public class JFMain extends JFrame {
 	private void initComponents() {
 		final java.awt.Color colorFirstButton = new java.awt.Color(230, 230, 230);
 		final java.awt.Color colorSecondButton = new java.awt.Color(153, 230, 255);
-		final java.awt.Color colorTables = new java.awt.Color(105,105,105);
+		final java.awt.Color colorTables = new java.awt.Color(255,255,255);
 		
 		avioes = new ArrayList<>();
 		
@@ -443,6 +443,7 @@ public class JFMain extends JFrame {
         sep11.setOrientation(SwingConstants.VERTICAL);
         sep11.setBounds(200, 0, 5, pnlRadar.getHeight());
         sep11.setVisible(true);
+      
         pnlRadar.add(sep11);
         
         JSeparator sep12 = new JSeparator();
