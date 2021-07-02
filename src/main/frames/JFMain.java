@@ -6,6 +6,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,8 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+
+
 
 import main.Util.Calculo;
 import main.components.PlaneTableModel;
@@ -646,87 +649,78 @@ public class JFMain extends JFrame {
 	}
 	
 	private void distanceAirport(){
+		Double distancia = 0.0;
+		txtReport.setText(null);
 		try {
-			Double distancia = Double.parseDouble(JOptionPane.showInputDialog("informe a distancia mimima o aero porto!"));
-			
-			for (int i=0; i < planeTableModel.getRowCount(); i++ ) {
-				Aviao aviaoA = planeTableModel.getPlane(i);
-				
-					
-					double distanciaCalc = Calculo.distancia(0,0,aviaoA.getPontoX(), aviaoA.getPontoY());
-					
-					if (distanciaCalc <= distancia) {
-						txtReport.setText("o aviao A: " + aviaoA.getCodigo() 
-										+ "esta perto do aerp portp " 
-								);
-					}
-					
-				}
-			
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,"Algo deu arado: " + e);
+			distancia = Double.parseDouble(JOptionPane.showInputDialog("inform the minimum distance to the airport! (km)"));
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Enter valid value" + e);
 		}
 		
+		StringBuilder stringBuilder = new StringBuilder();
 		
+		for (int i=0; i < planeTableModel.getRowCount(); i++ ) {
+			Aviao aviaoA = planeTableModel.getPlane(i);
+			
+			double distanciaCalc = Calculo.distancia(0,0,aviaoA.getPontoX(), aviaoA.getPontoY());
+			
+			if (distanciaCalc <= distancia) {
+				stringBuilder.append("The airplane: " + aviaoA.getCodigo() + " is below the minimum distance from the airport!\n"); 
+			}
+					
+		}
+		if(!stringBuilder.isEmpty()) {
+			txtReport.setText(stringBuilder.toString());
+		}else {
+			txtReport.setText("There is no plane below the minimum distance from the airport!");
+		}
 	}
-	
-
-	
 	
 	private void distancePlanes() {
+		Double distancia = 0.0;
+		StringBuilder stringBuilder = new StringBuilder();
 		try {
-			Double distancia = Double.parseDouble(JOptionPane.showInputDialog("informe a distancia mimima!"));
-			
-			for (int i=0; i < planeTableModel.getRowCount(); i++ ) {
-				Aviao aviaoA = planeTableModel.getPlane(i);
-				
-				for (int j=0; j < planeTableModel.getRowCount(); j++ ) {
-					Aviao aviaoB = planeTableModel.getPlane(j);
-					if(aviaoA.getCodigo() == aviaoB.getCodigo()) {
-						continue;
-					}
-					
-					double distanciaCalc = Calculo.distancia(aviaoA.getPontoX(), aviaoA.getPontoY(), aviaoB.getPontoX(), aviaoB.getPontoY());
-					
-					if (distanciaCalc <= distancia) {
-						txtReport.setText("o aviao A: " + aviaoA.getCodigo() 
-										+ "vai esta perto " + aviaoB.getCodigo()
-								);
-					}
-					
-				}
-				
-			}
-			
-			
-			
-			
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,"Algo deu arado: " + e);
+			distancia = Double.parseDouble(JOptionPane.showInputDialog("inform the minimum distance between the aircraft! (km)"));
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null,"Enter valid value" + e);
 		}
-		
-		
+			
+		for (int i=0; i < planeTableModel.getRowCount(); i++ ) {
+			Aviao aviaoA = planeTableModel.getPlane(i);
+				
+			for (int j=0; j < planeTableModel.getRowCount(); j++ ) {
+				Aviao aviaoB = planeTableModel.getPlane(j);
+				
+				if(aviaoA.getCodigo() == aviaoB.getCodigo()) {
+					continue;
+				}
+					
+				double distanciaCalc = Calculo.distancia(aviaoA.getPontoX(), aviaoA.getPontoY(), aviaoB.getPontoX(), aviaoB.getPontoY());
+					
+				if (distanciaCalc <= distancia) {
+					stringBuilder.append("The airplane: " + aviaoA.getCodigo() +" is below the minimum distance from the plane " + aviaoB.getCodigo() + "\n");
+				}		
+			}		
+		}
 	}
-	
-	
 	
 	private void tempColiton() {//GEN-FIRST:event_btnRotaColisaoActionPerformed
         if (planeTableModel.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "Não existem aviões no radar.");
+            JOptionPane.showMessageDialog(null, "There are no planes on the radar");
             return;
         }
         
         double tempoMinimo;
         
         try {
-            tempoMinimo = Double.parseDouble(JOptionPane.showInputDialog("Tempo mínimo de distância no ponto de colisão para alerta (Segundos):"));
+            tempoMinimo = Double.parseDouble(JOptionPane.showInputDialog("Minimum distance to alert collision (Segundos):"));
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Informe uma quantidade válida.");
+            JOptionPane.showMessageDialog(null, "Enter valid value");
             return;
         }
         
         
-        StringBuilder builderRelatorio = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         
         for (int i = 0; i < planeTableModel.getRowCount(); i++) {
             Aviao aviaoA = planeTableModel.getPlane(i);
@@ -741,13 +735,13 @@ public class JFMain extends JFrame {
                 InfoColisao info = Calculo.calcularColisao(aviaoA, aviaoB);
                 
                 if (info.getDiferencaTempo() <= tempoMinimo) {
-                	builderRelatorio.append(">>> Aviões em rota de colisão <<<\n");
-                	builderRelatorio.append("Aviai A : " +aviaoA.getCodigo()  + "Aviao B" + aviaoB.getCodigo() + "\n");
+                	
+                	stringBuilder.append("The airplane: " +aviaoA.getCodigo()  + " is on a collision course with the plane " + aviaoB.getCodigo() + "\n");
                     
                 }
             }
         }
-        txtReport.setText(builderRelatorio.toString());        
+        txtReport.setText(stringBuilder.toString());        
     }
 	
 	
