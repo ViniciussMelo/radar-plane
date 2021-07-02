@@ -648,6 +648,12 @@ public class JFMain extends JFrame {
 				}		
 			}		
 		}
+		
+		if(!stringBuilder.isEmpty()) {
+			txtReport.setText(stringBuilder.toString());
+		}else {
+			txtReport.setText("There is no plane below the minimum distance of another plane!");
+		}		
 	}
 	
 	private void tempColiton() {//GEN-FIRST:event_btnRotaColisaoActionPerformed
@@ -688,7 +694,11 @@ public class JFMain extends JFrame {
                 }
             }
         }
-        txtReport.setText(stringBuilder.toString());        
+        if(!stringBuilder.isEmpty()) {
+			txtReport.setText(stringBuilder.toString());
+		}else {
+			txtReport.setText("There is no plane on a collision course for the defined time!");
+		}	       
     }
 	
 	
