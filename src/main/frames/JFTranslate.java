@@ -1,5 +1,7 @@
 package main.frames;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import main.Util.Calculo;
@@ -8,7 +10,7 @@ import main.model.Aviao;
 @SuppressWarnings("serial")
 public class JFTranslate extends javax.swing.JFrame {
 	private final JFMain principal;
-    private final Aviao plane;
+    private final List<Aviao> planes;
     
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnTranslate;
@@ -22,11 +24,11 @@ public class JFTranslate extends javax.swing.JFrame {
     private javax.swing.JTextField txtX;
     private javax.swing.JTextField txtY;
     
-    public JFTranslate(JFMain main, Aviao plane) {
+    public JFTranslate(JFMain main, List<Aviao> planes) {
     	initComponents();
     	
     	this.principal = main;
-    	this.plane = plane;
+    	this.planes = planes;
     }
     
     private void initComponents() {
@@ -156,7 +158,9 @@ public class JFTranslate extends javax.swing.JFrame {
             return;
         }
         
-        Calculo.transladar(plane, x, y);
+        for (Aviao aviao : planes) {
+        	 Calculo.transladar(aviao, x, y);		
+		}       
         principal.updateTable();
         
         this.dispose();

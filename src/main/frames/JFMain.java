@@ -508,20 +508,19 @@ public class JFMain extends JFrame {
 	private void btnScaleActionPerformed(java.awt.event.ActionEvent evt) {
 		int selectedLine[] = tblPlane.getSelectedRows();
 		
-		if(selectedLine.length < 0) {
+		if(selectedLine.length < 1) {
 			JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
 			return;
 		}
 		
 		List<Aviao> list = new ArrayList<Aviao>(); 
 		for (int i = 0; i<selectedLine.length; i++) {
-			
 			list.add(planeTableModel.getPlane(selectedLine[i]));
 		}
 		
 		JFScale scaleFrame = new JFScale(this, list);
 		scaleFrame.setVisible(true);
-		
+		tblPlane.clearSelection();
 	}
 	
 	private JLabel generatePlaneImage(Aviao aviao) throws IOException {
@@ -576,16 +575,21 @@ public class JFMain extends JFrame {
 	}
 
 	private void btnTranslateActionPerformed(java.awt.event.ActionEvent evt) {
-		int selectedLine = tblPlane.getSelectedRow();
+		int selectedLine[] = tblPlane.getSelectedRows();
+		
+		if(selectedLine.length < 1) {
+			JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
+			return;
+		}
 
-        if (selectedLine >= 0) {
-            Aviao plane = planeTableModel.getPlane(selectedLine);
+		List<Aviao> list = new ArrayList<Aviao>(); 
+		for (int i = 0; i<selectedLine.length; i++) {
+			list.add(planeTableModel.getPlane(selectedLine[i]));
+		}
             
-            JFTranslate frameTranslate = new JFTranslate(this, plane);
-            frameTranslate.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
-        }
+        JFTranslate frameTranslate = new JFTranslate(this, list);
+        frameTranslate.setVisible(true);
+        tblPlane.clearSelection();
 	}
 	
 	private void btnRotateActionPerformed(java.awt.event.ActionEvent evt) {
