@@ -594,16 +594,21 @@ public class JFMain extends JFrame {
 	}
 	
 	private void btnRotateActionPerformed(java.awt.event.ActionEvent evt) {
-		int selectedLine = tblPlane.getSelectedRow();
+		int selectedLine[] = tblPlane.getSelectedRows();
+		
+		if(selectedLine.length < 1) {
+			JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
+			return;
+		}
 
-        if (selectedLine >= 0) {
-            Aviao plane = planeTableModel.getPlane(selectedLine);
-            
-            JFRotate frameTranslate = new JFRotate(this, plane);
-            frameTranslate.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
-        }
+		List<Aviao> list = new ArrayList<Aviao>(); 
+		for (int i = 0; i<selectedLine.length; i++) {
+			list.add(planeTableModel.getPlane(selectedLine[i]));
+		}
+        
+        JFRotate frameTranslate = new JFRotate(this, list);
+        frameTranslate.setVisible(true);
+        tblPlane.clearSelection();
 	}
 	
 	private void distanceAirport(){

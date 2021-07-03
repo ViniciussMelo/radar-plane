@@ -1,5 +1,7 @@
 package main.frames;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import main.Util.Calculo;
@@ -8,7 +10,7 @@ import main.model.Aviao;
 @SuppressWarnings("serial")
 public class JFRotate extends javax.swing.JFrame {
 	private final JFMain principal;
-    private final Aviao plane;
+    private final List<Aviao> planes;
     
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnRotate;
@@ -25,11 +27,11 @@ public class JFRotate extends javax.swing.JFrame {
     private javax.swing.JTextField txtX;
     private javax.swing.JTextField txtY;
     
-	public JFRotate(JFMain main, Aviao plane) {
+	public JFRotate(JFMain main, List<Aviao> planes) {
     	initComponents();
     	
     	this.principal = main;
-    	this.plane = plane;
+    	this.planes = planes;
     }
 	
 	private void initComponents() {
@@ -199,7 +201,10 @@ public class JFRotate extends javax.swing.JFrame {
             return;
         }
         
-        Calculo.rotacionar(plane, x, y, angulo);
+        for (Aviao aviao : planes) {
+        	Calculo.rotacionar(aviao, x, y, angulo);		
+		}
+        
         principal.updateTable();
         
         this.dispose();
