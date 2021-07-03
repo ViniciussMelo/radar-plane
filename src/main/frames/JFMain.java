@@ -505,17 +505,22 @@ public class JFMain extends JFrame {
 	
 	
 	private void btnScaleActionPerformed(java.awt.event.ActionEvent evt) {
-		int selectedLine = tblPlane.getSelectedRow();
+		int selectedLine[] = tblPlane.getSelectedRows();
 		
-		if(selectedLine < 0) {
+		if(selectedLine.length < 0) {
 			JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
 			return;
 		}
 		
-		Aviao plane = planeTableModel.getPlane(selectedLine);
+		List<Aviao> list = new ArrayList<Aviao>(); 
+		for (int i = 0; i<selectedLine.length; i++) {
+			
+			list.add(planeTableModel.getPlane(selectedLine[i]));
+		}
 		
-		JFScale scaleFrame = new JFScale(this, plane);
+		JFScale scaleFrame = new JFScale(this, list);
 		scaleFrame.setVisible(true);
+		
 	}
 	
 	private JLabel generatePlaneImage(Aviao aviao) throws IOException {

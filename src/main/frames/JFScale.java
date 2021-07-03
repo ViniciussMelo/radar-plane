@@ -1,5 +1,7 @@
 package main.frames;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import main.Util.Calculo;
@@ -8,7 +10,7 @@ import main.model.Aviao;
 @SuppressWarnings("serial")
 public class JFScale extends javax.swing.JFrame {
 	private final JFMain principal;
-    private final Aviao plane;
+    private final List<Aviao> planes;
     
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnScale;
@@ -19,11 +21,11 @@ public class JFScale extends javax.swing.JFrame {
     private javax.swing.JTextField txtX;
     private javax.swing.JTextField txtY;
     
-    public JFScale(JFMain main, Aviao plane) {
+    public JFScale(JFMain main, List<Aviao> planes) {
     	initComponents();
     	
     	this.principal = main;
-    	this.plane = plane;
+    	this.planes = planes;
     }
     
     private void initComponents() {
@@ -156,7 +158,9 @@ public class JFScale extends javax.swing.JFrame {
             return;
         }
         
-        Calculo.escalonar(plane, x, y);
+        for (Aviao aviao : planes) {
+        	Calculo.escalonar(aviao, x, y);			
+		}
         principal.updateTable();
         
         this.dispose();
