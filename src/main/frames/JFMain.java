@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -621,7 +622,7 @@ public class JFMain extends JFrame {
 			}
 					
 		}
-		if(!stringBuilder.isEmpty()) {
+		if(stringBuilder.length() != 0) {
 			txtReport.setText(stringBuilder.toString());
 		}else {
 			txtReport.setText("There is no plane below the minimum distance from the airport!");
@@ -631,6 +632,8 @@ public class JFMain extends JFrame {
 	private void distancePlanes() {
 		Double distancia = 0.0;
 		StringBuilder stringBuilder = new StringBuilder();
+		HashMap<Integer, Integer> map = new HashMap<>();
+		
 		try {
 			distancia = Double.parseDouble(JOptionPane.showInputDialog("inform the minimum distance between the aircraft! (km)"));
 		} catch (NumberFormatException e) {
@@ -646,16 +649,23 @@ public class JFMain extends JFrame {
 				if(aviaoA.getCodigo() == aviaoB.getCodigo()) {
 					continue;
 				}
+				
+				Integer alreadyExistis = map.get(aviaoB.getCodigo());
+				
+				if(alreadyExistis != null) {
+					continue;
+				}
 					
 				double distanciaCalc = Calculo.distancia(aviaoA.getPontoX(), aviaoA.getPontoY(), aviaoB.getPontoX(), aviaoB.getPontoY());
 					
 				if (distanciaCalc <= distancia) {
+					map.put(aviaoA.getCodigo(), aviaoB.getCodigo());
 					stringBuilder.append("The airplane: " + aviaoA.getCodigo() +" is below the minimum distance from the plane " + aviaoB.getCodigo() + "\n");
 				}		
 			}		
 		}
 		
-		if(!stringBuilder.isEmpty()) {
+		if(stringBuilder.length() != 0) {
 			txtReport.setText(stringBuilder.toString());
 		}else {
 			txtReport.setText("There is no plane below the minimum distance of another plane!");
@@ -700,7 +710,7 @@ public class JFMain extends JFrame {
                 }
             }
         }
-        if(!stringBuilder.isEmpty()) {
+        if(stringBuilder.length() != 0) {
 			txtReport.setText(stringBuilder.toString());
 		}else {
 			txtReport.setText("There is no plane on a collision course for the defined time!");
