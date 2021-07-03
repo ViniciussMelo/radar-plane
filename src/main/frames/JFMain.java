@@ -506,9 +506,10 @@ public class JFMain extends JFrame {
 	
 	
 	private void btnScaleActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		int selectedLine[] = tblPlane.getSelectedRows();
 		
-		if(selectedLine.length < 0) {
+		if(selectedLine.length < 1) {
 			JOptionPane.showMessageDialog(null, "It is necessary to select an airplane!");
 			return;
 		}
@@ -521,7 +522,7 @@ public class JFMain extends JFrame {
 		
 		JFScale scaleFrame = new JFScale(this, list);
 		scaleFrame.setVisible(true);
-		
+		tblPlane.clearSelection();
 	}
 	
 	private JLabel generatePlaneImage(Aviao aviao) throws IOException {
