@@ -506,6 +506,7 @@ public class JFMain extends JFrame {
 	
 	
 	private void btnScaleActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		int selectedLine[] = tblPlane.getSelectedRows();
 		
 		if(selectedLine.length < 1) {

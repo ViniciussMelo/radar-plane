@@ -160,8 +160,8 @@ public class JFScale extends javax.swing.JFrame {
         
         for (Aviao aviao : planes) {
         	Calculo.escalonar(aviao, x, y);			
+        	principal.updateTable();
 		}
-        principal.updateTable();
         
         this.dispose();
     }
