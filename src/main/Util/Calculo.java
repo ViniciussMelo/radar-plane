@@ -31,8 +31,8 @@ public class Calculo {
 	public static void rotacionar(Aviao aviao, double cordX, double cordY, double angulo) {
 		
 		//caso a cordenada seja maior que 0, altera para negativo, caso contrario, mantem
-		double auxX = cordX > 0 ? -cordX : cordX;
-		double auxY = cordY > 0 ? -cordY : cordY;
+		double auxX = cordX * -1; 
+		double auxY = cordY * -1;
 		
 		transladar(aviao, auxX, auxY);
 		
