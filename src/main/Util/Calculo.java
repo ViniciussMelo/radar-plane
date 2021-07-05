@@ -43,7 +43,7 @@ public class Calculo {
 		
 		//rotacionar
 		double novoX = (aviao.getPontoX() * cosseno) - (aviao.getPontoY() * seno);
-		double novoY = (aviao.getPontoY() * cosseno) - (aviao.getPontoY() * seno);
+		double novoY = (aviao.getPontoY() * cosseno) + (aviao.getPontoX() * seno);
 		
 		aviao.setPontoX(novoX);
 		aviao.setPontoY(novoY);
